@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TrackFlow - Personal Productivity & Schedule System</title>
+  
+  <meta name="description" content="Professional personal productivity, daily schedule and progress tracking system powered by Google Sheets.">
+  <meta name="theme-color" content="#0284c7">
+  
+  <!-- PWA Manifest & Favicon -->
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="apple-touch-icon" href="./assets/icon-192.png">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+      <div class="brand-header">
+        <img src="./assets/favicon.svg" alt="TrackFlow Logo" class="brand-icon">
+        <span class="brand-title">TrackFlow</span>
+      </div>
+
+      <ul class="nav-menu">
+        <li class="nav-item active">
+          <button type="button" data-view-target="dashboard">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+            <span>Dashboard</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" data-view-target="schedule">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+            <span>My Schedule</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" data-view-target="tasks">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <span>All Tasks</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" data-view-target="eod">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            <span>EOD Review</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" data-view-target="goals">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
+            <span>Monthly Goals</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" data-view-target="analytics">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+            <span>Analytics</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button type="button" data-view-target="settings">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            <span>Settings</span>
+          </button>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="sync-status-indicator">
+          <div id="sync-status-dot" class="status-dot synced"></div>
+          <span id="sync-status-text">Ready</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      
+      <!-- Top Application Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button type="button" id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+          </button>
+          <h1 id="current-view-title" class="view-heading">Dashboard</h1>
+        </div>
+
+        <div class="header-right">
+          <!-- Global Date Switcher -->
+          <div class="date-badge" title="Select active date">
+            <span>📅</span>
+            <input type="date" id="global-date-picker">
+          </div>
+
+          <!-- Install PWA Button (Hidden by default, shown when prompt is available) -->
+          <button type="button" id="btn-install-pwa" class="btn btn-sm btn-secondary" style="display: none;">
+            📥 Install App
+          </button>
+
+          <!-- Quick Add Button -->
+          <button type="button" id="btn-quick-add" class="btn btn-primary">
+            <span>+</span> Quick Add
+          </button>
+        </div>
+      </header>
+
+      <!-- View Sections Scroller -->
+      <div class="content-area">
+
+        <!-- 1. DASHBOARD -->
+        <section id="view-dashboard" class="view-section active"></section>
+
+        <!-- 2. MY SCHEDULE -->
+        <section id="view-schedule" class="view-section"></section>
+
+        <!-- 3. ALL TASKS -->
+        <section id="view-tasks" class="view-section">
+          <div class="card" style="margin-bottom: 1.25rem;">
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+              <input type="text" id="tasks-search" class="form-control" style="flex: 2; min-width: 180px;" placeholder="Search tasks by title, description or category...">
+              
+              <select id="tasks-filter-category" class="form-control" style="flex: 1; min-width: 130px;">
+                <option value="all">All Categories</option>
+                <option value="Study">Study</option>
+                <option value="Coding">Coding</option>
+                <option value="Project">Project</option>
+                <option value="Work">Work</option>
+                <option value="Interview Preparation">Interview Prep</option>
+                <option value="Personal">Personal</option>
+                <option value="Health">Health</option>
+                <option value="Other">Other</option>
+              </select>
+
+              <select id="tasks-filter-priority" class="form-control" style="flex: 1; min-width: 120px;">
+                <option value="all">All Priorities</option>
+                <option value="urgent">Urgent</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+
+              <select id="tasks-filter-status" class="form-control" style="flex: 1; min-width: 120px;">
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="missed">Missed</option>
+                <option value="rescheduled">Rescheduled</option>
+              </select>
+
+              <select id="tasks-sort-by" class="form-control" style="flex: 1; min-width: 130px;">
+                <option value="time">Sort: Scheduled Time</option>
+                <option value="priority">Sort: Priority</option>
+                <option value="points">Sort: Highest Points</option>
+                <option value="createdAt">Sort: Recently Added</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="view-tasks-list-container" class="task-list"></div>
+        </section>
+
+        <!-- 4. EOD REVIEW -->
+        <section id="view-eod" class="view-section"></section>
+
+        <!-- 5. GOALS -->
+        <section id="view-goals" class="view-section"></section>
+
+        <!-- 6. ANALYTICS -->
+        <section id="view-analytics" class="view-section"></section>
+
+        <!-- 7. SETTINGS -->
+        <section id="view-settings" class="view-section"></section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- TASK CREATE / EDIT MODAL -->
+  <div id="task-modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="task-modal-title" style="font-size: 1.15rem; font-weight: 600;">Create Task</h3>
+        <button type="button" id="btn-close-task-modal" class="btn-icon" aria-label="Close modal">✕</button>
+      </div>
+
+      <form id="task-form">
+        <input type="hidden" id="task-id">
+        <div class="modal-body">
+          
+          <div id="task-overlap-warning" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-danger); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; font-size: 0.825rem; color: #f87171;"></div>
+
+          <div class="form-group">
+            <label class="form-label" for="task-title">Task Title *</label>
+            <input type="text" id="task-title" class="form-control" placeholder="e.g. Solve 2 Dynamic Programming Problems" required maxlength="200">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="task-desc">Description (Optional)</label>
+            <textarea id="task-desc" class="form-control" rows="2" placeholder="Key outcomes, reference URLs or notes"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="task-date">Date *</label>
+              <input type="date" id="task-date" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="task-category">Category</label>
+              <select id="task-category" class="form-control">
+                <option value="Coding">Coding</option>
+                <option value="Study">Study</option>
+                <option value="Project">Project</option>
+                <option value="Work">Work</option>
+                <option value="Interview Preparation">Interview Prep</option>
+                <option value="Personal">Personal</option>
+                <option value="Health">Health</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="task-start-time">Start Time</label>
+              <input type="time" id="task-start-time" class="form-control" value="09:00">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="task-end-time">End Time</label>
+              <input type="time" id="task-end-time" class="form-control" value="10:00">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="task-priority">Priority</label>
+              <select id="task-priority" class="form-control">
+                <option value="urgent">Urgent</option>
+                <option value="high">High</option>
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="task-points">Planned Points (0 - 100) *</label>
+              <input type="number" id="task-points" class="form-control" min="0" max="100" value="25" required>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
+            <input type="checkbox" id="task-reminder-enabled" checked style="width: 16px; height: 16px; accent-color: var(--accent-primary);">
+            <label for="task-reminder-enabled" class="form-label" style="cursor: pointer; margin: 0;">
+              Enable reminder notifications for this task
+            </label>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-task" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- RESCHEDULE TASK MODAL -->
+  <div id="reschedule-modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="reschedule-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="reschedule-modal-title" style="font-size: 1.15rem; font-weight: 600;">Reschedule Task</h3>
+        <button type="button" id="btn-close-reschedule-modal" class="btn-icon" aria-label="Close reschedule modal">✕</button>
+      </div>
+
+      <form id="reschedule-form">
+        <input type="hidden" id="reschedule-task-id">
+        <div class="modal-body">
+          <p id="reschedule-task-title" style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;"></p>
+          
+          <div class="form-group">
+            <label class="form-label" for="reschedule-date">New Date *</label>
+            <input type="date" id="reschedule-date" class="form-control" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reschedule-start-time">New Start Time</label>
+              <input type="time" id="reschedule-start-time" class="form-control" value="09:00">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reschedule-end-time">New End Time</label>
+              <input type="time" id="reschedule-end-time" class="form-control" value="10:00">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reschedule-reason">Reschedule Note (Optional)</label>
+            <input type="text" id="reschedule-reason" class="form-control" placeholder="e.g. Priority shift, moved to morning">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-reschedule" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm Reschedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MONTHLY GOAL MODAL -->
+  <div id="goal-modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="goal-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="goal-modal-title" style="font-size: 1.15rem; font-weight: 600;">Create Monthly Goal</h3>
+        <button type="button" id="btn-close-goal-modal" class="btn-icon" aria-label="Close goal modal">✕</button>
+      </div>
+
+      <form id="goal-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="goal-month">Month</label>
+            <input type="month" id="goal-month" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="goal-title">Goal Title *</label>
+            <input type="text" id="goal-title" class="form-control" placeholder="e.g. Complete 30 Coding Problem Sessions" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="goal-desc">Description (Optional)</label>
+            <textarea id="goal-desc" class="form-control" rows="2" placeholder="Focus areas, key topics, etc."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="goal-target">Target Value *</label>
+              <input type="number" id="goal-target" class="form-control" min="1" value="20" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="goal-unit">Unit of Measure *</label>
+              <input type="text" id="goal-unit" class="form-control" placeholder="sessions, problems, hours, days" value="sessions" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-goal" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Goal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+  <!-- CHART.JS BUNDLE -->
+  <script src="./assets/chart.umd.min.js"></script>
+
+  <!-- APPLICATION JAVASCRIPT MODULES -->
+  <script src="./js/config.js"></script>
+  <script src="./js/firebase-config.js"></script>
+  <script src="./js/firebase-auth.js"></script>
+  <script src="./js/state.js"></script>
+  <script src="./js/storage.js"></script>
+  <script src="./js/scoring.js"></script>
+  <script src="./js/streak.js"></script>
+  <script src="./js/tasks.js"></script>
+  <script src="./js/reminders.js"></script>
+  <script src="./js/api.js"></script>
+  <script src="./js/eod.js"></script>
+  <script src="./js/goals.js"></script>
+  <script src="./js/analytics.js"></script>
+  <script src="./js/settings.js"></script>
+  <script src="./js/language.js"></script>
+  <script src="./js/app.js"></script>
+
+</body>
+</html>
